@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Paper is ERC20, ERC20Permit, ERC20Votes, ERC20Snapshot, Ownable {
-    // Dope Wars Loot: https://etherscan.io/address/0x8707276DF042E89669d69A177d3DA7dC78bd8723
+contract Letter is ERC20, ERC20Permit, ERC20Votes, ERC20Snapshot, Ownable {
+    // AAA Loot: https://etherscan.io/address/0x8707276DF042E89669d69A177d3DA7dC78bd8723
     IERC721Enumerable public loot = IERC721Enumerable(0x8707276DF042E89669d69A177d3DA7dC78bd8723);
-    // DopeDAO timelock: https://etherscan.io/address/0xb57ab8767cae33be61ff15167134861865f7d22c
+    // AAA timelock: https://etherscan.io/address/0xb57ab8767cae33be61ff15167134861865f7d22c
     address public timelock = 0xB57Ab8767CAe33bE61fF15167134861865F7D22C;
 
     // 8000 tokens number 1-8000
@@ -19,12 +19,12 @@ contract Paper is ERC20, ERC20Permit, ERC20Votes, ERC20Snapshot, Ownable {
     uint256 public tokenIdEnd = 8000;
 
     // Give out 1bn of tokens, evenly split across each NFT
-    uint256 public paperPerTokenId = (1000000000 * (10**decimals())) / tokenIdEnd;
+    uint256 public letterPerTokenId = (1000000000 * (10**decimals())) / tokenIdEnd;
 
     // track claimedTokens
     mapping(uint256 => bool) public claimedByTokenId;
 
-    constructor() ERC20("Paper", "PAPER") ERC20Permit("PAPER") {
+    constructor() ERC20("Letter", "LETTER") ERC20Permit("LETTER") {
         transferOwnership(timelock);
     }
 
@@ -32,8 +32,8 @@ contract Paper is ERC20, ERC20Permit, ERC20Votes, ERC20Snapshot, Ownable {
         _snapshot();
     }
 
-    /// @notice Claim Paper for a given Dope Wars Loot ID
-    /// @param tokenId The tokenId of the Dope Wars Loot NFT
+    /// @notice Claim Letter for a given AAA Loot ID
+    /// @param tokenId The tokenId of the AAA Loot NFT
     function claimById(uint256 tokenId) external {
         // Follow the Checks-Effects-Interactions pattern to prevent reentrancy
         // attacks
@@ -48,9 +48,9 @@ contract Paper is ERC20, ERC20Permit, ERC20Votes, ERC20Snapshot, Ownable {
         _claim(tokenId, _msgSender());
     }
 
-    /// @notice Claim Paper for all tokens owned by the sender
+    /// @notice Claim Letter for all tokens owned by the sender
     /// @notice This function will run out of gas if you have too much loot! If
-    /// this is a concern, you should use claimRangeForOwner and claim Dope in
+    /// this is a concern, you should use claimRangeForOwner and claim AAA in
     /// batches.
     function claimAllForOwner() external {
         uint256 tokenBalanceOwner = loot.balanceOf(_msgSender());
@@ -66,10 +66,10 @@ contract Paper is ERC20, ERC20Permit, ERC20Votes, ERC20Snapshot, Ownable {
         }
     }
 
-    /// @notice Claim Paper for all tokens owned by the sender within a
+    /// @notice Claim Letter for all tokens owned by the sender within a
     /// given range
     /// @notice This function is useful if you own too much DWL to claim all at
-    /// once or if you want to leave some Paper unclaimed.
+    /// once or if you want to leave some Letter unclaimed.
     function claimRangeForOwner(uint256 ownerIndexStart, uint256 ownerIndexEnd) external {
         uint256 tokenBalanceOwner = loot.balanceOf(_msgSender());
 
@@ -88,26 +88,26 @@ contract Paper is ERC20, ERC20Permit, ERC20Votes, ERC20Snapshot, Ownable {
         }
     }
 
-    /// @dev Internal function to mint Paper upon claiming
+    /// @dev Internal function to mint Letter upon claiming
     function _claim(uint256 tokenId, address tokenOwner) internal {
         // Checks
         // Check that the token ID is in range
         // We use >= and <= to here because all of the token IDs are 0-indexed
         require(tokenId >= tokenIdStart && tokenId <= tokenIdEnd, "TOKEN_ID_OUT_OF_RANGE");
 
-        // Check that Paper have not already been claimed for a given tokenId
-        require(!claimedByTokenId[tokenId], "PAPER_CLAIMED_FOR_TOKEN_ID");
+        // Check that Letter have not already been claimed for a given tokenId
+        require(!claimedByTokenId[tokenId], "LETTER_CLAIMED_FOR_TOKEN_ID");
 
         // Effects
 
-        // Mark that Paper has been claimed for the
+        // Mark that Letter has been claimed for the
         // given tokenId
         claimedByTokenId[tokenId] = true;
 
         // Interactions
 
-        // Send Paper to the owner of the token ID
-        _mint(tokenOwner, paperPerTokenId);
+        // Send Letter to the owner of the token ID
+        _mint(tokenOwner, letterPerTokenId);
     }
 
     function mint(address to, uint256 amount) external onlyOwner {

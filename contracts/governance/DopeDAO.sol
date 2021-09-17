@@ -6,9 +6,9 @@ import "@openzeppelin/contracts/governance/compatibility/GovernorCompatibilityBr
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesComp.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
 
-contract DopeDAO is Governor, GovernorCompatibilityBravo, GovernorVotesComp, GovernorTimelockCompound {
+contract ADAO is Governor, GovernorCompatibilityBravo, GovernorVotesComp, GovernorTimelockCompound {
     constructor(ERC20VotesComp _token, ICompoundTimelock _timelock)
-        Governor("DopeDAO")
+        Governor("ADAO")
         GovernorVotesComp(_token)
         GovernorTimelockCompound(_timelock)
     {}
@@ -22,11 +22,11 @@ contract DopeDAO is Governor, GovernorCompatibilityBravo, GovernorVotesComp, Gov
     }
 
     function quorum(uint256 blockNumber) public pure override returns (uint256) {
-        return 500; // DOPE DAO NFT TOKENS
+        return 500; // AAA NFT TOKENS
     }
 
     function proposalThreshold() public pure override returns (uint256) {
-        return 50; // DOPE DAO NFT TOKENS
+        return 50; // AAA NFT TOKENS
     }
 
     // The following functions are overrides required by Solidity.

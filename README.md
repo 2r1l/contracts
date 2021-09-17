@@ -1,4 +1,4 @@
-# DOPEDAO contracts
+# A-DAO contracts
 
 ## Development
 

@@ -1,6 +1,6 @@
 {
-  "name": "@dopedao/contracts",
-  "description": "DopeDAO smart contracts",
+  "name": "@aaa-dao/contracts",
+  "description": "A-DAO smart contracts",
   "version": "1.0.0",
   "devDependencies": {
     "@codechecks/client": "^0.1.11",

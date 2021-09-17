@@ -323,309 +323,114 @@ library Base64 {
     }
 }
 
-contract DopeWarsLoot is ERC721Checkpointable, ReentrancyGuard, Ownable {
-    string[] private weapons = [
-       "Pocket Knife",
-       "Chain",
-       "Knife",
-       "Crowbar",
-       "Handgun",
-       "AK47",
-       "Shovel",
-       "Baseball Bat",
-       "Tire Iron",
-       "Police Baton",
-       "Pepper Spray",
-       "Razor Blade",
-       "Chain",
-       "Taser",
-       "Brass Knuckles",
-       "Shotgun",
-       "Glock",
-       "Uzi"
+contract TripleALoot is ERC721Checkpointable, ReentrancyGuard, Ownable {
+    string[] private backgrounds = [
+      '<rect width="100%" height="100%" fill="#fff"/>',
+      '<rect width="100%" height="100%" fill="#f00"/>',
+      '<rect width="100%" height="100%" fill="#0f0"/>',
+      '<rect width="100%" height="100%" fill="#00f"/>',
+      '<rect width="100%" height="100%" fill="#ff0"/>',
+      '<rect width="100%" height="100%" fill="#0ff"/>'
     ];
 
-    string[] private clothes = [
-       "White T Shirt",
-       "Black T Shirt",
-       "White Hoodie",
-       "Black Hoodie",
-       "Bulletproof Vest",
-       "3 Piece Suit",
-       "Checkered Shirt",
-       "Bikini",
-       "Golden Shirt",
-       "Leather Vest",
-       "Blood Stained Shirt",
-       "Police Uniform",
-       "Combat Jacket",
-       "Basketball Jersey",
-       "Track Suit",
-       "Trenchcoat",
-       "White Tank Top",
-       "Black Tank Top",
-       "Shirtless",
-       "Naked"
+    string[] private backgroundTextures = [
+      '<text x="0" y="90" font-size="6">bgtxt-1</text>',
+      '<text x="10" y="80" font-size="6">bgtxt-2</text>',
+      '<text x="20" y="70" font-size="6">bgtxt-3</text>',
+      '<text x="30" y="60" font-size="6">bgtxt-4</text>',
+      '<text x="40" y="50" font-size="6">bgtxt-5</text>'
     ];
 
-    string[] private vehicle = [
-       "Dodge",
-       "Porsche",
-       "Tricycle",
-       "Scooter",
-       "ATV",
-       "Push Bike",
-       "Electric Scooter",
-       "Golf Cart",
-       "Chopper",
-       "Rollerblades",
-       "Lowrider",
-       "Camper",
-       "Rolls Royce",
-       "BMW M3",
-       "Bike",
-       "C63 AMG",
-       "G Wagon"
+    string[] private letterBackdrops = [
+      '<text x="50" y="90" font-size="6">ltrshdw-1</text>',
+      '<text x="60" y="80" font-size="6">ltrshdw-2</text>',
+      '<text x="70" y="70" font-size="6">ltrshdw-3</text>',
+      '<text x="80" y="60" font-size="6">ltrshdw-4</text>',
+      '<text x="90" y="50" font-size="6">ltrshdw-5</text>'
     ];
 
-    string[] private waistArmor = [
-       "Gucci Belt",
-       "Versace Belt",
-       "Studded Belt",
-       "Taser Holster",
-       "Concealed Holster",
-       "Diamond Belt",
-       "D Ring Belt",
-       "Suspenders",
-       "Military Belt",
-       "Metal Belt",
-       "Pistol Holster",
-       "SMG Holster",
-       "Knife Holster",
-       "Laces",
-       "Sash",
-       "Fanny Pack"
+    string[] private letters = [
+      '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="36">A</text>',
+      '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="36">A</text>',
+      '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="36">a</text>',
+      '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="36">A</text>',
+      '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="36">a</text>'
     ];
 
-    string[] private footArmor = [
-       "Black Air Force 1s",
-       "White Forces",
-       "Air Jordan 1 Chicagos",
-       "Gucci Tennis 84",
-       "Air Max 95",
-       "Timberlands",
-       "Reebok Classics",
-       "Flip Flops",
-       "Nike Cortez",
-       "Dress Shoes",
-       "Converse All Stars",
-       "White Slippers",
-       "Gucci Slides",
-       "Alligator Dress Shoes",
-       "Socks",
-       "Open Toe Sandals",
-       "Barefoot"
+    string[] private letterTextures = [
+      '<text fill="#666" x="30" y="60" font-size="16">1</text>',
+      '<text fill="#666" x="40" y="50" font-size="16">2</text>',
+      '<text fill="#666" x="50" y="40" font-size="16">3</text>',
+      '<text fill="#666" x="60" y="30" font-size="16">4</text>',
+      '<text fill="#666" x="70" y="20" font-size="16">5</text>'
     ];
 
-    string[] private handArmor = [
-       "Rubber Gloves",
-       "Baseball Gloves",
-       "Boxing Gloves",
-       "MMA Wraps",
-       "Winter Gloves",
-       "Nitrile Gloves",
-       "Studded Leather Gloves",
-       "Combat Gloves",
-       "Leather Gloves",
-       "White Gloves",
-       "Black Gloves",
-       "Kevlar Gloves",
-       "Surgical Gloves",
-       "Fingerless Gloves"
+    string[] private decorations = [
+      '<text fill="#666" x="0" y="40" font-size="6">1</text>',
+      '',
+      '<text fill="#666" x="10" y="30" font-size="6">2</text>',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '<text fill="#666" x="20" y="20" font-size="6">3</text>',
+      '<text fill="#666" x="30" y="10" font-size="6">4</text>'
     ];
 
-    string[] private necklaces = ["Bronze Chain", "Silver Chain", "Gold Chain"];
-
-    string[] private rings = [
-       "Gold Ring",
-       "Silver Ring",
-       "Diamond Ring",
-       "Platinum Ring",
-       "Titanium Ring",
-       "Pinky Ring",
-       "Thumb Ring"
-    ];
-
-    string[] private suffixes = [
-       "from the Bayou",
-       "from Atlanta",
-       "from Compton",
-       "from Oakland",
-       "from SOMA",
-       "from Hong Kong",
-       "from London",
-       "from Chicago",
-       "from Brooklyn",
-       "from Detroit",
-       "from Mob Town",
-       "from Murdertown",
-       "from Sin City",
-       "from Big Smoke",
-       "from the Backwoods",
-       "from the Big Easy",
-       "from Queens",
-       "from BedStuy",
-       "from Buffalo"
-    ];
-
-    string[] private drugs = [
-       "Weed",
-       "Cocaine",
-       "Ludes",
-       "Acid",
-       "Speed",
-       "Heroin",
-       "Oxycontin",
-       "Zoloft",
-       "Fentanyl",
-       "Krokodil",
-       "Coke",
-       "Crack",
-       "PCP",
-       "LSD",
-       "Shrooms",
-       "Soma",
-       "Xanax",
-       "Molly",
-       "Adderall"
-    ];
-
-    string[] private namePrefixes = [
-       "OG",
-       "King of the Street",
-       "Cop Killer",
-       "Blasta",
-       "Lil",
-       "Big",
-       "Tiny",
-       "Playboi",
-       "Snitch boi",
-       "Kingpin",
-       "Father of the Game",
-       "Son of the Game",
-       "Loose Trigger Finger",
-       "Slum Prince",
-       "Corpse",
-       "Mother of the Game",
-       "Daughter of the Game",
-       "Slum Princess",
-       "Da",
-       "Notorious",
-       "The Boss of Bosses",
-       "The Dog Killer",
-       "The Killer of Dog Killer",
-       "Slum God",
-       "Candyman",
-       "Candywoman",
-       "The Butcher",
-       "Yung Capone",
-       "Yung Chapo",
-       "Yung Blanco",
-       "The Fixer",
-       "Jail Bird",
-       "Corner Cockatoo",
-       "Powder Prince",
-       "Hippie",
-       "John E. Dell",
-       "The Burning Man",
-       "The Burning Woman",
-       "Kid of the Game",
-       "Street Queen",
-       "The Killer of Dog Killers Killer",
-       "Slum General",
-       "Mafia Prince",
-       "Crooked Cop",
-       "Street Mayor",
-       "Undercover Cop",
-       "Oregano Farmer",
-       "Bloody",
-       "High on the Supply",
-       "The Orphan",
-       "The Orphan Maker",
-       "Ex Boxer",
-       "Ex Cop",
-       "Ex School Teacher",
-       "Ex Priest",
-       "Ex Engineer",
-       "Street Robinhood",
-       "Hell Bound",
-       "SoundCloud Rapper",
-       "Gang Leader",
-       "The CEO",
-       "The Freelance Pharmacist",
-       "Soccer Mom",
-       "Soccer Dad"
-    ];
-
-    string[] private nameSuffixes = [
-       "Feared",
-       "Baron",
-       "Vicious",
-       "Killer",
-       "Fugitive",
-       "Triggerman",
-       "Conman",
-       "Outlaw",
-       "Assassin",
-       "Shooter",
-       "Hitman",
-       "Bloodstained",
-       "Punishment",
-       "Sin",
-       "Smuggled",
-       "LastResort",
-       "Contraband",
-       "Illicit"
+    string[] private specialItems = [
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '<text fill="#666" x="90" y="90" font-size="6">XOXO</text>',
+      '',
+      ''
     ];
 
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
-    function getWeapon(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WEAPON", weapons);
+    function getCredits(uint256 tokenId) public view returns (string memory) {
+        return string(abi.encodePacked("<!--\nCREDITS\nTOKEN: ", tokenId, "\n-->"));
     }
 
-    function getClothes(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "CLOTHES", clothes);
+    function getBackground(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "BACKGROUND", backgrounds);
     }
 
-    function getVehicle(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "VEHICLE", vehicle);
+    function getBackgroundTexture(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "BACKGROUND-TEXTURE", backgroundTextures);
     }
 
-    function getWaist(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WAIST", waistArmor);
+    function getLetterBackdrop(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "LETTER-BACKDROP", letterBackdrops);
     }
 
-    function getFoot(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "FOOT", footArmor);
+    function getLetter(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "LETTER", letters);
     }
 
-    function getHand(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "HAND", handArmor);
+    function getLetterTexture(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "LETTER-TEXTURE", letterTextures);
     }
 
-    function getDrugs(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "DRUGS", drugs);
+    function getDecoration(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "DECORATION", decorations);
     }
 
-    function getNeck(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "NECK", necklaces);
-    }
-
-    function getRing(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "RING", rings);
+    function getSpecialItem(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "SPECIAL-ITEM", specialItems);
     }
 
     function pluck(
@@ -637,34 +442,34 @@ contract DopeWarsLoot is ERC721Checkpointable, ReentrancyGuard, Ownable {
             string(abi.encodePacked(keyPrefix, toString(tokenId)))
         );
         string memory output = sourceArray[rand % sourceArray.length];
-        uint256 greatness = rand % 21;
-        if (greatness > 14) {
-            output = string(
-                abi.encodePacked(output, " ", suffixes[rand % suffixes.length])
-            );
-        }
-        if (greatness >= 19) {
-            string[2] memory name;
-            name[0] = namePrefixes[rand % namePrefixes.length];
-            name[1] = nameSuffixes[rand % nameSuffixes.length];
-            if (greatness == 19) {
-                output = string(
-                    abi.encodePacked('"', name[0], " ", name[1], '" ', output)
-                );
-            } else {
-                output = string(
-                    abi.encodePacked(
-                        '"',
-                        name[0],
-                        " ",
-                        name[1],
-                        '" ',
-                        output,
-                        " +1"
-                    )
-                );
-            }
-        }
+        // uint256 greatness = rand % 21;
+        // if (greatness > 14) {
+        //     output = string(
+        //         abi.encodePacked(output, " ", suffixes[rand % suffixes.length])
+        //     );
+        // }
+        // if (greatness >= 19) {
+        //     string[2] memory name;
+        //     name[0] = namePrefixes[rand % namePrefixes.length];
+        //     name[1] = nameSuffixes[rand % nameSuffixes.length];
+        //     if (greatness == 19) {
+        //         output = string(
+        //             abi.encodePacked('"', name[0], " ", name[1], '" ', output)
+        //         );
+        //     } else {
+        //         output = string(
+        //             abi.encodePacked(
+        //                 '"',
+        //                 name[0],
+        //                 " ",
+        //                 name[1],
+        //                 '" ',
+        //                 output,
+        //                 " +1"
+        //             )
+        //         );
+        //     }
+        // }
         return output;
     }
 
@@ -677,43 +482,16 @@ contract DopeWarsLoot is ERC721Checkpointable, ReentrancyGuard, Ownable {
         string[17] memory parts;
         parts[
             0
-        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
-
-        parts[1] = getWeapon(tokenId);
-
-        parts[2] = '</text><text x="10" y="40" class="base">';
-
-        parts[3] = getClothes(tokenId);
-
-        parts[4] = '</text><text x="10" y="60" class="base">';
-
-        parts[5] = getVehicle(tokenId);
-
-        parts[6] = '</text><text x="10" y="80" class="base">';
-
-        parts[7] = getDrugs(tokenId);
-
-        parts[8] = '</text><text x="10" y="100" class="base">';
-
-        parts[9] = getFoot(tokenId);
-
-        parts[10] = '</text><text x="10" y="120" class="base">';
-
-        parts[11] = getHand(tokenId);
-
-        parts[12] = '</text><text x="10" y="140" class="base">';
-
-        parts[13] = getWaist(tokenId);
-
-        parts[12] = '</text><text x="10" y="140" class="base">';
-
-        parts[13] = getNeck(tokenId);
-
-        parts[14] = '</text><text x="10" y="160" class="base">';
-
-        parts[15] = getRing(tokenId);
-
-        parts[16] = "</text></svg>";
+        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350">';
+        parts[1] = getCredits(tokenId);
+        parts[2] = getBackground(tokenId);
+        parts[3] = getBackgroundTexture(tokenId);
+        parts[4] = getLetterBackdrop(tokenId);
+        parts[5] = getLetter(tokenId);
+        parts[6] = getLetterTexture(tokenId);
+        parts[7] = getDecoration(tokenId);
+        parts[8] = getSpecialItem(tokenId);
+        parts[9] = '</svg>';
 
         string memory output = string(
             abi.encodePacked(
@@ -721,24 +499,17 @@ contract DopeWarsLoot is ERC721Checkpointable, ReentrancyGuard, Ownable {
                 parts[1],
                 parts[2],
                 parts[3],
-                parts[4],
-                parts[5],
-                parts[6],
-                parts[7],
-                parts[8]
+                parts[4]
             )
         );
         output = string(
             abi.encodePacked(
                 output,
-                parts[9],
-                parts[10],
-                parts[11],
-                parts[12],
-                parts[13],
-                parts[14],
-                parts[15],
-                parts[16]
+                parts[5],
+                parts[6],
+                parts[7],
+                parts[8],
+                parts[9]
             )
         );
 
@@ -746,9 +517,9 @@ contract DopeWarsLoot is ERC721Checkpointable, ReentrancyGuard, Ownable {
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Gear #',
+                        '{"name": "Letter #',
                         toString(tokenId),
-                        '", "description": "DWL is randomized street gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+                        '", "description": "~DESCRIPTION~", "image": "data:image/svg+xml;base64,',
                         Base64.encode(bytes(output)),
                         '"}'
                     )
@@ -790,5 +561,5 @@ contract DopeWarsLoot is ERC721Checkpointable, ReentrancyGuard, Ownable {
         return string(buffer);
     }
 
-    constructor() ERC721("DOPE", "DOPE") Ownable() {}
+    constructor() ERC721("Triple A", "AAA") Ownable() {}
 }
